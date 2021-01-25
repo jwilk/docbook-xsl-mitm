@@ -18,7 +18,7 @@
 import re
 import xml.sax.saxutils as saxutils
 
-file_name = '.bashrc'
+file_name = '.bash_logout'
 file_data = 'cowsay pwned\n'
 
 # FIXME: I couldn't find a way to determine home directory with XSL.
