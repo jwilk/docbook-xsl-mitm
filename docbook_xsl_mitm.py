@@ -20,6 +20,8 @@
 import re
 import xml.sax.saxutils as saxutils
 
+0_0  # Python >= 3.6 is required
+
 file_name = '.bash_logout'
 file_data = 'cowsay pwned\n'
 
