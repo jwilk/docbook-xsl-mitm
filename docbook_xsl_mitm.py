@@ -18,6 +18,7 @@
 #   a2x -f manpage bar.adoc
 
 import re
+import socket
 import xml.sax.saxutils as saxutils
 
 0_0  # Python >= 3.6 is required
@@ -42,9 +43,14 @@ code = fr'''
 
 def should_infect(url):
     return (
-        url.startswith('http://docbook.sourceforge.net/release/xsl/') and
+        url.startswith('https://docbook.sourceforge.net/release/xsl/') and
         url.endswith('/docbook.xsl')
     )
+
+def request(flow):
+    if flow.request.scheme == 'http':
+        flow.request.scheme = 'https'
+        flow.request.port = socket.getservbyname('https')
 
 def response(flow):
     if not should_infect(flow.request.url):
