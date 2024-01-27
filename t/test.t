@@ -53,7 +53,7 @@ esac
 
 if [ -z "${DOCBOOK_XSL_MITM_DANGEROUS_TESTING-}" ]
 then
-    echo ok 2 '# skip: This test makes you vulnerable to local and remote attacks. Set DOCBOOK_XSL_MITM_DANGEROUS_TESTING=1 to got for it.'
+    echo ok 2 '# skip: This test makes you vulnerable to local and remote attacks. Set DOCBOOK_XSL_MITM_DANGEROUS_TESTING=1 to go for it.'
     exit
 fi
 
